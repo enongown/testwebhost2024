@@ -1,11 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Audio Player</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Upload Challenge</title>
+    <style>
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+    </style>
 </head>
 <body>
-    <audio id="audioPlayer" src="2002.mp3"></audio>
-    <button onclick="document.getElementById('audioPlayer').play()">Play</button>
-    <button onclick="document.getElementById('audioPlayer').pause()">Pause</button>
+    <h1>Upload a Photo to Complete the Challenge</h1>
+    <input type="file" id="photoInput" accept="image/*" />
+    <div id="result"></div>
+
+    <script>
+        // Reference image data (replace with your actual image data)
+        const referenceImage = "data:image/png;base64,REF_IMAGE_BASE64";
+
+        // Image comparison function
+        function compareImages(uploadedImg, referenceImg) {
+            return uploadedImg === referenceImg;
+        }
+
+        // Handle file upload
+        document.getElementById('photoInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const uploadedImage = e.target.result;
+                const isCorrect = compareImages(uploadedImage, referenceImage);
+
+                if (isCorrect) {
+                    document.getElementById('result').innerHTML = '<span style="color:green;">✔ Correct Image!</span>';
+                } else {
+                    document.getElementById('result').innerHTML = '<span style="color:red;">✘ Incorrect Image. Try again!</span>';
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
 </body>
 </html>
